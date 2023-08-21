@@ -2,12 +2,12 @@ from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-def mu(sign: int, g:float, alpha: float, delta12: float):
+def nu(sign: int, g:float, alpha: float, delta12: float):
     mu = sign*(g*alpha/(delta12*(alpha-sign*delta12)))
     return mu
 
-def nu(sign: int, g:float, alpha: float, delta12: float):
-    nu = sign*(g*(-sign)*delta12/(delta12*(alpha-sign*delta12)))
+def mu(sign: int, g:float, alpha: float, delta12: float):
+    nu = -(g/(alpha-sign*delta12))
     return nu
 
 def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float):

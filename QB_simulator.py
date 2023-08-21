@@ -12,17 +12,17 @@ psi02 = tensor(fock(2,0),fock(2,0))
 times = np.linspace(0.0, 200.0, 10000)
 #expectation operator for the 1st qubit
 e_ops = [tensor(sigmaz(),identity(2)),tensor(identity(2),sigmaz())]
-w1 = 4.5 * GHz_unit
-w2 = 4.3 * GHz_unit
-wr = 7.5 * GHz_unit
+w1 = 3.2324 * GHz_unit
+w2 = 3.2945 * GHz_unit
+wr = 8.2855 * GHz_unit
 delta1 = w1 - wr
 delta2 = w2 - wr
-g1 = 50 * MHz_unit
+g1 = 5 * GHz_unit
 g2 = g1
 g = g1*g2*(delta1+delta2)/(2*delta1*delta2)
 alpha = 3.0 * MHz_unit
 delta12 = w1 - w2
-driving_freq = w2
+driving_freq = 2 * MHz_unit
 #calculates the hamiltonian of the 1st qubit
 H1 = Hamiltonian(1,driving_freq, g, alpha, delta12) 
 H2 = Hamiltonian(2,driving_freq, g, alpha, delta12) 
