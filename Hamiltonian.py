@@ -2,23 +2,27 @@ from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-def nu(sign: int, g:float, alpha: float, delta12: float):
-    mu = sign*(g*alpha/(delta12*(alpha-sign*delta12)))
+def mu(sign: int, g:float, alpha: float, delta12: float):
+    #mu = sign*(g*alpha/(delta12*(alpha-sign*delta12)))
+    mu = sign * g / delta12 * alpha / (alpha - sign * delta12)
     return mu
 
-def mu(sign: int, g:float, alpha: float, delta12: float):
-    nu = -(g/(alpha-sign*delta12))
+def nu(sign: int, g:float, alpha: float, delta12: float):
+    #nu = -(g/(alpha-sign*delta12))
+    nu = sign * g / delta12 * (-sign * delta12) / (alpha - sign * delta12)
     return nu
 
-def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float):
+def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float,eta):
     H = np.zeros(tensor(identity(2),sigmax()).shape[0])
     match QB:
         case 1:
-            H = driving*(tensor(sigmax(),identity(2))+nu(-1,g,alpha,delta12)*tensor(identity(2),sigmax())
-                         +mu(-1,g,alpha,delta12)*tensor(sigmaz(),sigmax()))
+            H = driving*(nu(-1,g,alpha,delta12)*tensor(identity(2),sigmax())
+                         +mu(-1,g,alpha,delta12)*tensor(sigmaz(),sigmax())
+                         +eta*tensor(sigmaz(),identity(2)))
         case 2:
-            H = driving*(tensor(identity(2),sigmax())+nu(1,g,alpha,delta12)*tensor(sigmax(),identity(2))
-                         +mu(1,g,alpha,delta12)*tensor(sigmax(),sigmaz()))
+            H = driving*(nu(1,g,alpha,delta12)*tensor(sigmax(),identity(2))
+                         +mu(1,g,alpha,delta12)*tensor(sigmax(),sigmaz())
+                         +eta*tensor(identity(2),sigmaz()))
     return H
 
 def D_Hamiltonian(driving: float, phi: float):
