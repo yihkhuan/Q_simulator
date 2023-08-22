@@ -17,9 +17,9 @@ phi = np.pi/3.0
 H = D_Hamiltonian(5.0,phi)
 
 result = mesolve(H, psi0, times, [], e_ops)
-fig, ax = plt.subplots()
-ax.plot(times, result.expect[0])
-ax.set_xlabel('Time')
-ax.set_ylabel('Expectation values')
+plt.subplots()
+plt.plot(times, result.expect[0])
+plt.set_xlabel('Time')
+plt.set_ylabel('Expectation values')
 ax.legend(("Sigma-Z"))
 plt.show()
