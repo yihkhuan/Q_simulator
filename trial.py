@@ -3,38 +3,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Hamiltonian import Hamiltonian
 
-# psi01 = tensor(fock(2,1),fock(2,0))
-# psi02 = tensor(fock(2,0),fock(2,0))
+psi02 = tensor(fock(2,1),fock(2,0))
+psi01 = tensor(fock(2,0),fock(2,0))
 
-# times = np.linspace(0.0,10.0,1000)
+times = np.linspace(0.0,100.0,10000)
 
-# psi = (2.0 * basis(2, 0) + basis(2, 1)).unit()
+# Define QobjEvos
+H = tensor(qeye(2),sigmax())
+e_ops = tensor(qeye(2),sigmaz())
 
-# def linear(t, args):
-#     return 0.3 * t
+result_gnd = mesolve(H, psi01, times, [], e_ops)
+result_exc = mesolve(H, psi02, times, [], e_ops)
 
-# def periodic(t, args):
-#     return np.cos(0.5 * t)
-
-# # Define QobjEvos
-# H_lin = QobjEvo([[sigmaz(), linear]], tlist=times)
-# H_per = QobjEvo([[sigmaz(), periodic]], tlist=times)
-
-# H = [H_lin,H_per]
-
-# result_lin = sesolve(H, psi, times, [sigmay()])
-
-# # Plot <sigma_y> for linear increasing field strength
-# plt.plot(times, result_lin.expect[0])
-# plt.xlabel("Time"), plt.ylabel("<sigma_y>")
-
-# plt.plot(times, result_lin.expect[1])
-# plt.xlabel("Time"), plt.ylabel("<sigma_y>")
-# plt.show()
-xlist = np.linspace(0, 4.0, 5)
-ylist = np.linspace(8.0, 12.0, 5)
-X, Y = np.meshgrid(xlist, ylist)
-Z = (X+Y)
-print(Z)
+plt.figure()
+plt.plot(times, result_gnd.expect[0],label = "Q1 = |0>")
+plt.plot(times,result_exc.expect[0],label = "Q1 = |1>")
+plt.xlabel('Time, ns')
+plt.ylabel('Expectation values')
+plt.title("Q1")
+plt.legend()
+plt.show()
 
 
