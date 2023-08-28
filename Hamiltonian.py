@@ -13,21 +13,34 @@ def nu(sign: int, g:float, alpha: float, delta12: float):
     nu = sign * g / delta12 * (-sign * delta12) / (alpha - sign * delta12)
     return nu
 
-def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float,eta):
+def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float, eta, 
+                 driving_x: float,phi: float):
     H = np.zeros(tensor(identity(2),sigmax()).shape[0])
     match QB:
         case 1:
             H = driving*(nu(-1,g,alpha,delta12)*tensor(identity(2),sigmax())
                          +mu(-1,g,alpha,delta12)*tensor(sigmaz(),sigmax())
                          +eta*tensor(sigmaz(),identity(2)))
+                         
+                         
         case 2:
             H = driving*(nu(1,g,alpha,delta12)*tensor(sigmax(),identity(2))
                          +mu(1,g,alpha,delta12)*tensor(sigmax(),sigmaz())
                          +eta*tensor(identity(2),sigmaz()))
+                         
+                         
     return H
 
-def D_Hamiltonian(driving: float, phi: float):
-    H = -driving*(np.cos(phi)*sigmax()+np.sin(phi)*sigmay())
+def Hamiltonian_transmon(w1:float, w2: float, alpha: float, g: float):
+    b = tensor(fock(2,0),dag(fock(2,1)))
+    H = g*(dag(b)*b+b*dag(b))
+    ws = [w1,w2]
+    for w in ws:
+        H = H + w*dag(b)*b+alpha/2*dag(b)*b*(dag(b)*b-1)
+    return H
+
+def Hamiltonian_phase(driving : float, phi : float):
+    H = -driving*1/2*(np.cos(phi)*tensor(identity(2),sigmax())+np.sin(phi)*tensor(identity(2),sigmay()))
     return H
 
 #function outputs the rabi frequency of the qubit
