@@ -19,7 +19,7 @@ w1 = 4.3 * GHz_unit
 w2 = 4.5 * GHz_unit
 wr = 7.5 * GHz_unit
 g1 = 60 * MHz_unit
-alpha = np.linspace(0.0,500.0,N) * MHz_unit
+alpha = -1 * np.linspace(0.0,500.0,N) * MHz_unit
 delta12 = w1 - w2
 driving_freq =  20000 * MHz_unit
 eta = 0
@@ -34,7 +34,7 @@ delta2 = w2 - wr
 g = (g1*g1)*(delta1+delta2)/(2*delta1*delta2)
 
 for a in alpha:
-    H = Hamiltonian(1,driving_freq, g, a, delta12, eta)
+    H = Hamiltonian(1,driving_freq, g, a, delta12, eta,0,0)
     result_gnd = mesolve(H, psi01, times, [], e_ops[1])
     result_exc = mesolve(H, psi02, times, [], e_ops[1])
     rabi_gnd = rabi(times,result_gnd.expect[0])
@@ -43,7 +43,7 @@ for a in alpha:
     results_exc[i] = rabi_exc
     print(i)
     i = i + 1
-    
+
 
 plt.plot(alpha, results_gnd,label = "ground")
 plt.plot(alpha, results_exc,label = "excited")
