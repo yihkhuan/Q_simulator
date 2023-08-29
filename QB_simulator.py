@@ -1,7 +1,7 @@
 from qutip import *
 import numpy as np
 import matplotlib.pyplot as plt
-from Hamiltonian import Hamiltonian,rabi
+from Hamiltonian import Hamiltonian,rabi, Hamiltonian_phase
 
 
 MHz_unit = 1e-3 
