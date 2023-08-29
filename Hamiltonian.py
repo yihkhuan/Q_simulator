@@ -13,8 +13,7 @@ def nu(sign: int, g:float, alpha: float, delta12: float):
     nu = sign * g / delta12 * (-sign * delta12) / (alpha - sign * delta12)
     return nu
 
-def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float, eta, 
-                 driving_x: float,phi: float):
+def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float, eta) -> Qobj:
     H = np.zeros(tensor(identity(2),sigmax()).shape[0])
     match QB:
         case 1:
@@ -31,7 +30,11 @@ def Hamiltonian (QB: int, driving: float, g: float, alpha: float, delta12: float
                          
     return H
 
-def Hamiltonian_transmon(w1:float, w2: float, alpha: float, g: float):
+def Hamiltonian_phase(driving : float, phi : float) -> Qobj :
+    H = -driving*1/2*(np.cos(phi)*tensor(identity(2),sigmax())+np.sin(phi)*tensor(identity(2),sigmay()))
+    return H
+
+def Hamiltonian_transmon(w1:float, w2: float, alpha: float, g: float) -> Qobj :
     b = tensor(fock(2,0),dag(fock(2,1)))
     H = g*(dag(b)*b+b*dag(b))
     ws = [w1,w2]
@@ -39,9 +42,11 @@ def Hamiltonian_transmon(w1:float, w2: float, alpha: float, g: float):
         H = H + w*dag(b)*b+alpha/2*dag(b)*b*(dag(b)*b-1)
     return H
 
-def Hamiltonian_phase(driving : float, phi : float):
-    H = -driving*1/2*(np.cos(phi)*tensor(identity(2),sigmax())+np.sin(phi)*tensor(identity(2),sigmay()))
+def Hamiltonian_CR(driving:float, delta12:float, g:float) -> Qobj :
+    H = ((delta12 - np.sqrt(delta12 ** 2 + driving ** 2)) / 2 * tensor(sigmaz(),qeye(2)) - 
+         g*driving / np.sqrt(delta12 ** 2 + driving ** 2) / 2 * tensor(sigmaz(),sigmax()))
     return H
+    
 
 #function outputs the rabi frequency of the qubit
 def rabi (times: np.ndarray, plot: list) -> float:

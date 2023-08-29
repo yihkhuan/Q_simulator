@@ -26,6 +26,7 @@ eta = 0
 #calculates the hamiltonian of the ith qubit and the resulting output of the hamiltonian
 X, Y = np.meshgrid(wr, g1)
 results = np.zeros(X.shape)
+
 i = 0
 
 for glist in g1:
@@ -47,7 +48,7 @@ for glist in g1:
 nslice = N + 1
 a = np.arange(nslice)
 b = np.max(results) / (nslice-1)
-print()
+
 #plotting
 plt.subplots(1,1)
 cp = plt.contourf(X, Y, results,b*a)
@@ -57,4 +58,24 @@ plt.xlabel('resonance frequency, GHz')
 plt.ylabel('g1, GHz')
 plt.show()
 
+# delta1 = w1 - X
+# delta2 = w2 - X
+# g = (Y*Y)*(delta1+delta2)/(2*delta1*delta2)
+
+# Rabi_gnd = driving_freq*g/delta12
+# Rabi_exc = driving_freq*g/(delta12*(alpha+delta12))*(delta12-alpha)
+
+# deltarabi = Rabi_gnd - Rabi_exc
+
+# nslice = N + 1
+# a = np.arange(nslice)
+# b = np.max(deltarabi) / (nslice-1)
+
+# plt.subplots(1,1)
+# cp = plt.contourf(X, Y, deltarabi, a*b)
+# plt.colorbar(cp,label = 'Rabi difference, GHz') # Add a colorbar to a plot
+# plt.title('Delta Rabi plot')
+# plt.xlabel('resonance frequency, GHz')
+# plt.ylabel('g1, GHz')
+# plt.show()
 
