@@ -47,6 +47,23 @@ def Hamiltonian_CR(driving:float, delta12:float, g:float) -> Qobj :
          g*driving / np.sqrt(delta12 ** 2 + driving ** 2) / 2 * tensor(sigmaz(),sigmax()))
     return H
     
+def Hamiltonian_RWA(driving:float, g: float, delta1: float, delta2: float) -> Qobj :
+    H1 = (delta1) / 2 * tensor(sigmaz(),identity(2)) + g / 2 * (tensor(sigmax(),sigmax()) + tensor(sigmay(),sigmay())) + driving * tensor(identity(2), sigmax()) / 2
+    H2 = (delta2) / 2 * tensor(identity(2),sigmaz()) + g / 2 * (tensor(sigmax(),sigmax()) + tensor(sigmay(),sigmay())) + driving * tensor(identity(2), sigmax()) / 2
+    H = H1 + H2
+    return H
+
+def Hamiltonian_5(w1 ,w2, delta12, alpha, J, driving) -> Qobj:
+    wix = -J*driving/(delta12 + alpha)
+    wzi = (1/(2 * (delta12 + alpha)) - 1/(2 * delta12))*driving**2
+    wzx = (1/(delta12 + alpha) - 1/(delta12)) * J * driving
+    wzz = (1/(delta12 - alpha) - 1/(delta12 + alpha)) * J **2
+
+    H = (wix * tensor(identity(2),sigmax()) +
+         wzi * tensor(sigmaz(),identity(2)) +
+         wzx * tensor(sigmaz(),sigmax()) +
+         wzz * tensor(sigmaz(),sigmaz())) / 2
+    return H
 
 #function outputs the rabi frequency of the qubit
 def rabi (times: np.ndarray, plot: list) -> float:
